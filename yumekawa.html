@@ -341,27 +341,26 @@
   }
   function viewRows(){
     if (CLOUD_URL && cloudState === 'ok'){
-      return { rows: cloudRows, note: 'みんなの きろく' };
+      return { rows: cloudRows, note: '' };
     }
     if (CLOUD_URL && cloudState === 'loading'){
-      return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:true, k:r.k })), note: 'みんなの きろくを よみこみ中…' };
+      return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:true, k:r.k })), note: 'よみこみ中…' };
     }
     if (CLOUD_URL && cloudState === 'error'){
-      return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:false, k:r.k })), note: 'オンラインに つながりません（この たんまつの きろく）' };
+      return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:false, k:r.k })), note: 'オフライン（この たんまつの きろく）' };
     }
     if (sharedState === 'ok'){
       return {
         rows: flatRows(),
-        note: writeBlocked ? 'みんなの きろく（みるだけ）'
-                           : 'みんなの きろく'
+        note: writeBlocked ? '（みるだけ）' : ''
       };
     }
     const list = loadRank();
     return {
       rows: list.map(r => ({ n:r.n, s:r.s, me:false, k:r.k })),
-      note: sharedState === 'loading' ? 'みんなの きろくを よみこみ中…'
-          : sharedState === 'slow'    ? 'みんなの きろくに つながりません（この たんまつの きろく）'
-          : sharedState === 'error'   ? 'みんなの きろくを よめませんでした（この たんまつの きろく）'
+      note: sharedState === 'loading' ? 'よみこみ中…'
+          : sharedState === 'slow'    ? 'この たんまつの きろく'
+          : sharedState === 'error'   ? 'この たんまつの きろく'
           : 'この たんまつの きろく'
     };
   }

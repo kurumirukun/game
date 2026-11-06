@@ -170,7 +170,7 @@
     // keep the sound button and the overlays on the board
     muteBtn.style.top = (BY + 10) + 'px';
     muteBtn.style.right = (FW - (BX + BW) + 10) + 'px';
-    const R = Math.min(26, BW * .06);
+    const R = 0;
     [titleScreen, overScreen].forEach(ov => {
       ov.style.inset = 'auto';
       ov.style.left = BX + 'px';
@@ -1093,7 +1093,7 @@
     ctx.clearRect(0, 0, FW, FH);
 
     // the board: soft shadow, rounded corners, everything drawn inside it
-    const R = Math.min(26, BW * .06);
+    const R = 0;
     ctx.save();
     ctx.shadowColor = 'rgba(176,130,190,.35)';
     ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;

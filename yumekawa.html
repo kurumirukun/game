@@ -14,7 +14,7 @@
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;margin:0}
@@ -54,7 +54,7 @@
      color:#d7c5ff;text-shadow:0 2px 0 #ffe3f3,0 0 14px rgba(255,190,225,.9)}
   h2{font-family:"M PLUS Rounded 1c",sans-serif;font-weight:700;font-size:24px;margin:0 0 10px;color:#8a6bb3}
   p{margin:7px 0;font-size:13.5px;color:#8d7aa5;line-height:1.7;font-weight:500}
-  .big{font-family:"Mochiy Pop One",sans-serif;font-size:40px;color:#ff7fb4;margin:2px 0 0;text-shadow:0 2px 0 #fff}
+  .big{font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;font-size:42px;color:#ff7fb4;margin:2px 0 0;text-shadow:0 2px 0 #fff}
   .sub{font-size:12.5px;color:#a394b8}
   button{
     font-family:"M PLUS Rounded 1c",sans-serif;font-weight:700;font-size:19px;
@@ -982,7 +982,7 @@
         ctx.drawImage(BANANA, -bw/2, -bh/2, bw, bh);
         ctx.restore();
       }
-      sparkle(x + 15, y - 10, 4.2, '#fffbe0', .9);
+      sparkle(x - 15, y - 10, 4.2, '#fffbe0', .9);
     } else if (it.kind === 'star'){
       if (starReady){
         const sw = 34, sh = sw * STAR.height / STAR.width;

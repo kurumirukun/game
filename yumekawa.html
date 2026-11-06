@@ -36,7 +36,7 @@
   canvas{display:block;width:100%;height:100%;border-radius:20px;box-shadow:0 18px 40px rgba(170,120,180,.28)}
   .overlay{
     position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;
-    padding:5vh 18px 6vh;text-align:center;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:58px 16px 22px;text-align:center;overflow-y:auto;-webkit-overflow-scrolling:touch;
     background:radial-gradient(circle at 50% 40%,rgba(255,235,248,.5),rgba(226,210,252,.6));
     border-radius:20px;
   }
@@ -143,24 +143,42 @@
   const commentEl = document.getElementById('comment');
   const muteBtn = document.getElementById('mute');
 
-  let W = 420, H = 760, GY = 660, DPR = 1, SC = 1;
+  // W/H/GY are the play area's own units; the board is centred on screen
+  let W = 420, H = 630, GY = 526, DPR = 1, SC = 1;
+  let FW = 400, FH = 800, BX = 0, BY = 0, BW = 400, BH = 600, K = 1;
 
   function resize(){
-    const cw = stage.clientWidth, ch = stage.clientHeight;
-    let h = 420 * ch / cw;
-    h = Math.max(430, Math.min(920, h));
-    W = Math.round(h * cw / ch);
-    H = Math.round(h);
-    GY = H - 104;
-    SC = Math.min(1.4, Math.max(1, H / 620));
+    FW = stage.clientWidth; FH = stage.clientHeight;
+    BW = Math.min(FW, 520);
+    BH = Math.min(FH - 14, BW * 1.5);
+    if (BH < 240) BH = Math.max(180, FH - 6);
+    BX = Math.round((FW - BW) / 2);
+    BY = Math.round((FH - BH) / 2);
+    W = 420;
+    H = Math.round(W * BH / BW);
+    K = BW / W;
+    GY = H - 100;
+    SC = Math.min(1.5, Math.max(1, H / 500));
     player.w = 54 * SC; player.h = 72 * SC;
     DPR = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = Math.round(W * DPR);
-    cv.height = Math.round(H * DPR);
+    cv.width = Math.round(FW * DPR);
+    cv.height = Math.round(FH * DPR);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     buildScenery();
     player.x = Math.round(W * 0.24);
     if (state !== 'play') player.y = GY - player.h;
+    // keep the sound button and the overlays on the board
+    muteBtn.style.top = (BY + 10) + 'px';
+    muteBtn.style.right = (FW - (BX + BW) + 10) + 'px';
+    const R = Math.min(26, BW * .06);
+    [titleScreen, overScreen].forEach(ov => {
+      ov.style.inset = 'auto';
+      ov.style.left = BX + 'px';
+      ov.style.top = BY + 'px';
+      ov.style.width = BW + 'px';
+      ov.style.height = BH + 'px';
+      ov.style.borderRadius = R + 'px';
+    });
   }
   window.addEventListener('resize', resize);
 
@@ -1072,7 +1090,21 @@
 
   function render(){
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.clearRect(0, 0, W, H);
+    ctx.clearRect(0, 0, FW, FH);
+
+    // the board: soft shadow, rounded corners, everything drawn inside it
+    const R = Math.min(26, BW * .06);
+    ctx.save();
+    ctx.shadowColor = 'rgba(176,130,190,.35)';
+    ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
+    ctx.fillStyle = '#ffeaf7';
+    rr(BX, BY, BW, BH, R); ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    rr(BX, BY, BW, BH, R); ctx.clip();
+    ctx.translate(BX, BY); ctx.scale(K, K);
+
     ctx.save();
     if (shake > 0) ctx.translate((Math.random()-.5)*shake, (Math.random()-.5)*shake);
 
@@ -1104,6 +1136,14 @@
     if (state === 'play') drawHUD();
 
     if (flash > 0){ ctx.fillStyle = 'rgba(255,170,205,' + flash.toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
+    ctx.restore();   // shake
+    ctx.restore();   // board clip
+
+    // board edge
+    const R2 = Math.min(26, BW * .06);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 3;
+    rr(BX + 1.5, BY + 1.5, BW - 3, BH - 3, R2 - 1); ctx.stroke();
     ctx.restore();
   }
 

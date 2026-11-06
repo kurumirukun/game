@@ -3,7 +3,7 @@
    is used (stale-while-revalidate), so a second visit works with no network.
    Firebase requests always go to the network: offline the games fall back to
    the records stored on the device. */
-const VERSION = 'gorilla-v1';
+const VERSION = 'gorilla-v3';
 const FONTS = VERSION + '-fonts';
 const SHELL = [
   './',
@@ -58,6 +58,20 @@ self.addEventListener('fetch', event => {
 
   // anything else off-site (the score database) stays online-only
   if (url.origin !== self.location.origin) return;
+
+  // pages: always try the network first so an update shows on the next open
+  if (req.mode === 'navigate' || (req.destination === 'document')) {
+    event.respondWith(
+      fetch(req).then(res => {
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(VERSION).then(cache => cache.put(req, copy));
+        }
+        return res;
+      }).catch(() => caches.match(req).then(hit => hit || caches.match('./index.html')))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(req).then(hit => {

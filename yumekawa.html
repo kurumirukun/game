@@ -10,7 +10,7 @@
     <script src="sw-register.js" defer></script>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="ゆめかわゴリラ">
-    <meta name="theme-color" content="#ffd9ee">
+    <meta name="theme-color" content="#ffc9e6">
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
   }
   body{
     display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(170deg,#ffd9ee 0%,#e6d6ff 45%,#d2f4ff 100%);
+    background:#ffc9e6;
     font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
     overflow:hidden;user-select:none;
   }
@@ -33,10 +33,10 @@
     height:min(100vh,920px);
     height:min(calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom)),920px);
   }
-  canvas{display:block;width:100%;height:100%;border-radius:20px;box-shadow:0 18px 40px rgba(170,120,180,.28)}
+  canvas{display:block;width:100%;height:100%}
   .overlay{
     position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;
-    padding:58px 16px 22px;text-align:center;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:50px 16px 24px;text-align:center;overflow-y:auto;-webkit-overflow-scrolling:touch;
     background:radial-gradient(circle at 50% 40%,rgba(255,235,248,.5),rgba(226,210,252,.6));
     border-radius:20px;
   }
@@ -166,17 +166,8 @@
     player.x = Math.round(W * 0.24);
     if (state !== 'play') player.y = GY - player.h;
     // keep the sound button and the overlays on the board
-    muteBtn.style.top = (BY + 10) + 'px';
-    muteBtn.style.right = (FW - (BX + BW) + 10) + 'px';
-    const R = 0;
-    [titleScreen, overScreen].forEach(ov => {
-      ov.style.inset = 'auto';
-      ov.style.left = BX + 'px';
-      ov.style.top = BY + 'px';
-      ov.style.width = BW + 'px';
-      ov.style.height = BH + 'px';
-      ov.style.borderRadius = R + 'px';
-    });
+    muteBtn.style.top = '10px';
+    muteBtn.style.right = '12px';
   }
   window.addEventListener('resize', resize);
 
@@ -194,8 +185,7 @@
   let state = 'title';
   let score = 0, lives = 3, speed = 2.9, scrollX = 0, dist = 0;
   let shake = 0, invuln = 0, overAt = 0, flash = 0;
-  let best = 0;
-  try { best = parseInt(localStorage.getItem('gorilla_yumekawa_best') || '0', 10) || 0; } catch(e){}
+  let best = 0;   // best score of the name you are playing as
 
   const player = { x:90, y:0, vy:0, jumps:0, onGround:true, t:0, blink:0, squash:0, w:54, h:72 };
   let obstacles = [], items = [], parts = [], clouds = [], stars = [], bubbles = [];
@@ -351,7 +341,7 @@
   }
   function viewRows(){
     if (CLOUD_URL && cloudState === 'ok'){
-      return { rows: cloudRows, note: 'みんなの きろく（オンライン・なまえごとの ベスト）' };
+      return { rows: cloudRows, note: 'みんなの きろく' };
     }
     if (CLOUD_URL && cloudState === 'loading'){
       return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:true, k:r.k })), note: 'みんなの きろくを よみこみ中…' };
@@ -362,7 +352,7 @@
     if (sharedState === 'ok'){
       return {
         rows: flatRows(),
-        note: writeBlocked ? 'みんなの きろく（このアカウントは みるだけ）'
+        note: writeBlocked ? 'みんなの きろく（みるだけ）'
                            : 'みんなの きろく — リンクを おくった ともだちと きょうゆう'
       };
     }
@@ -495,24 +485,28 @@
   document.getElementById('startBtn').addEventListener('click', e => { e.stopPropagation(); start(); });
   document.getElementById('againBtn').addEventListener('click', e => { e.stopPropagation(); start(); });
 
+  function nameBest(){
+    const n = getName();
+    let b = 0;
+    loadRank().forEach(r => { if (r.n === n && r.s > b) b = r.s; });
+    return b;
+  }
   function start(){
-    reset(); state = 'play';
+    reset(); best = nameBest(); state = 'play';
     titleScreen.classList.add('hide');
     overScreen.classList.add('hide');
   }
   function gameOver(){
     state = 'over'; overAt = performance.now();
     shake = 0; flash = 0;
-    if (score > best){
-      best = score;
-      try{ localStorage.setItem('gorilla_yumekawa_best', String(best)); }catch(e){}
-    }
+
     finalScore.textContent = score;
-    bestLine.textContent = 'ベスト ' + best;
     commentEl.textContent = score >= 600 ? 'ゆめかわマスター！✨'
       : score >= 300 ? 'とっても じょうず！🍌'
       : score >= 120 ? 'いい かんじ！💗' : 'また あそんでね';
     const res = addRecord(score);
+    best = nameBest();
+    bestLine.textContent = 'ベスト ' + best;
     let msg = res.pos > 0 ? (res.pos + 'いに ランクイン！') : '';
     if (CLOUD_URL){
       const nm = getName();
@@ -1129,12 +1123,8 @@
 
     // the board: soft shadow, rounded corners, everything drawn inside it
     const R = 0;
-    ctx.save();
-    ctx.shadowColor = 'rgba(176,130,190,.35)';
-    ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
-    ctx.fillStyle = '#ffeaf7';
+    ctx.fillStyle = '#ffc9e6';
     rr(BX, BY, BW, BH, R); ctx.fill();
-    ctx.restore();
 
     ctx.save();
     rr(BX, BY, BW, BH, R); ctx.clip();

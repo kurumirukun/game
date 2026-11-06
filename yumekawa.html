@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>ゴリラのゆめかわ冒険</title>
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
@@ -258,7 +259,45 @@
   }
   const MEDAL = ['🥇','🥈','🥉'];
 
-  // --- shared leaderboard state
+  // --- オンライン ランキング（Firebase Realtime Database／あそぶ人は アカウント不要）
+  const CLOUD_URL = String((window.GORILLA_CLOUD || '')).trim().replace(/\/+$/,'');
+  const CLOUD_BOARD = '/scores/yumekawa';
+  let cloudRows = null, cloudState = CLOUD_URL ? 'loading' : 'off';
+  const cloudKey = n => encodeURIComponent(n).replace(/\./g, '%2E');
+  function myNames(){ return loadRank().map(r => r.n); }
+  async function cloudLoad(){
+    if (!CLOUD_URL) return;
+    try{
+      const res = await fetch(CLOUD_URL + CLOUD_BOARD + '.json', { cache:'no-store' });
+      if (!res.ok) throw new Error('http');
+      const data = (await res.json()) || {};
+      const mine = myNames();
+      cloudRows = Object.keys(data).map(k => {
+        const v = data[k] || {};
+        const n = String(v.n || 'ゴリラ').slice(0,12);
+        return { n: n, s: Number(v.s) || 0, at: Number(v.t) || 0, me: mine.indexOf(n) >= 0 };
+      }).filter(r => r.s > 0).sort((a,b) => (b.s - a.s) || (a.at - b.at)).slice(0,10);
+      cloudState = 'ok';
+    }catch(e){ cloudState = 'error'; }
+    renderRank(null);
+  }
+  async function cloudSubmit(n, s){
+    if (!CLOUD_URL) return;
+    const url = CLOUD_URL + CLOUD_BOARD + '/' + cloudKey(n) + '.json';
+    try{
+      const cur = await (await fetch(url, { cache:'no-store' })).json();
+      if (cur && Number(cur.s) >= s){ cloudLoad(); return; }
+      await fetch(url, { method:'PUT', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ n: n, s: s, t: Date.now() }) });
+    }catch(e){ cloudState = 'error'; }
+    cloudLoad();
+  }
+  if (CLOUD_URL){
+    cloudLoad();
+    setInterval(() => { if (state !== 'play') cloudLoad(); }, 20000);
+  }
+
+  // --- claude.ai の中で ひらいた ときの 共有ランキング
   let db = null, uid = null, shared = null, sharedState = 'off', writeBlocked = false;
   function myBest(){
     if (!shared || !uid) return 0;
@@ -280,6 +319,15 @@
     return out.slice(0,10);
   }
   function viewRows(){
+    if (CLOUD_URL && cloudState === 'ok'){
+      return { rows: cloudRows, note: 'みんなの きろく（オンライン・なまえごとの ベスト）' };
+    }
+    if (CLOUD_URL && cloudState === 'loading'){
+      return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:true, k:r.k })), note: 'みんなの きろくを よみこみ中…' };
+    }
+    if (CLOUD_URL && cloudState === 'error'){
+      return { rows: loadRank().map(r => ({ n:r.n, s:r.s, me:false, k:r.k })), note: 'オンラインに つながりません（この たんまつの きろく）' };
+    }
     if (sharedState === 'ok'){
       return {
         rows: flatRows(),
@@ -430,7 +478,14 @@
       : score >= 120 ? 'いい かんじ！💗' : 'また あそんでね';
     const res = addRecord(score);
     let msg = res.pos > 0 ? (res.pos + 'いに ランクイン！') : '';
-    if (sharedState === 'ok'){
+    if (CLOUD_URL){
+      const nm = getName();
+      const rows = (cloudRows || []).filter(r => r.n !== nm);
+      const prev = (cloudRows || []).find(r => r.n === nm);
+      const ahead = rows.filter(r => r.s > score).length;
+      msg = (!prev || score > prev.s) && ahead < 10 ? ((ahead + 1) + 'いに ランクイン！') : '';
+      cloudSubmit(nm, score);
+    } else if (sharedState === 'ok'){
       const nm = getName(), rows = flatRows();
       const mineNow = rows.find(r => r.me && r.n === nm);
       const ahead = rows.filter(r => r.s > score && !(r.me && r.n === nm)).length;

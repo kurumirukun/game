@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GORILLA GAMES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Orbitron:wght@700;900&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{min-height:100%}
+  body{
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+    background:#0d0a18;color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:28px 18px 40px;gap:22px;min-height:100dvh;
+  }
+  header{text-align:center;margin-bottom:2px}
+  h1{
+    font-family:Orbitron,sans-serif;font-weight:900;font-size:clamp(24px,7vw,38px);letter-spacing:.14em;
+    background:linear-gradient(90deg,#ffb3dd,#ffd089,#9bd8ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header p{font-size:12.5px;letter-spacing:.2em;color:#8b82a8;margin-top:8px}
+  .cards{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;width:100%;max-width:760px}
+  a.card{
+    flex:1 1 300px;max-width:360px;min-height:220px;border-radius:20px;overflow:hidden;
+    text-decoration:none;color:inherit;position:relative;display:flex;flex-direction:column;
+    justify-content:flex-end;padding:22px;transition:transform .18s ease, box-shadow .18s ease;
+  }
+  a.card:hover{transform:translateY(-4px)}
+  a.card:active{transform:translateY(0)}
+  .kawaii{background:linear-gradient(165deg,#ffd3ee,#e5d2ff 55%,#c9f6ec);box-shadow:0 14px 34px rgba(255,140,200,.25)}
+  .kawaii h2{font-family:"Mochiy Pop One",sans-serif;color:#8a6bb3;font-size:22px;text-shadow:0 2px 0 #fff}
+  .kawaii p{color:#8d7aa5;font-size:13px;margin-top:8px;font-weight:600}
+  .kawaii .go{background:#ff78b4;color:#fff}
+  .sunset{background:linear-gradient(165deg,#2a0f33,#7a1a45 55%,#ef6a1d);box-shadow:0 14px 34px rgba(255,110,40,.22)}
+  .sunset h2{font-family:Orbitron,sans-serif;font-weight:900;letter-spacing:.1em;font-size:20px;color:#fff1dd;text-shadow:0 0 18px rgba(255,120,40,.8)}
+  .sunset p{color:#ffd9bb;font-size:13px;margin-top:8px;font-weight:600}
+  .sunset .go{background:#ffb14d;color:#2a1206}
+  .go{
+    display:inline-block;align-self:flex-start;margin-top:14px;padding:9px 20px;border-radius:999px;
+    font-size:13px;font-weight:700;letter-spacing:.08em;
+  }
+  .art{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .art svg{position:absolute;right:14px;top:14px;width:92px;height:92px;opacity:.95}
+  footer{font-size:11.5px;color:#6b6386;text-align:center;line-height:1.9;margin-top:4px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>GORILLA GAMES</h1>
+    <p>2 つ の ゴ リ ラ 、2 つ の 世 界</p>
+  </header>
+
+  <div class="cards">
+    <a class="card kawaii" href="yumekawa.html">
+      <div class="art">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="24" cy="52" r="9" fill="#c9b8ee"/><circle cx="76" cy="52" r="9" fill="#c9b8ee"/>
+          <circle cx="24" cy="52" r="4.6" fill="#ffc3e2"/><circle cx="76" cy="52" r="4.6" fill="#ffc3e2"/>
+          <ellipse cx="50" cy="52" rx="26" ry="24" fill="#c9b8ee"/>
+          <ellipse cx="50" cy="58" rx="18" ry="14" fill="#fff2fa"/>
+          <ellipse cx="39" cy="50" rx="6" ry="7" fill="#53406f"/><ellipse cx="61" cy="50" rx="6" ry="7" fill="#53406f"/>
+          <circle cx="37" cy="47.5" r="2.6" fill="#fff"/><circle cx="59" cy="47.5" r="2.6" fill="#fff"/>
+          <path d="M50 58c-5-5-9-1-9 2.5S46 66 50 69c4-3 9-5 9-8.5S55 53 50 58z" fill="#ff9bc6"/>
+          <ellipse cx="30" cy="60" rx="5" ry="3.4" fill="rgba(255,129,183,.55)"/>
+          <ellipse cx="70" cy="60" rx="5" ry="3.4" fill="rgba(255,129,183,.55)"/>
+          <ellipse cx="66" cy="26" rx="7" ry="5" fill="#ff8fc0" transform="rotate(20 66 26)"/>
+          <ellipse cx="79" cy="26" rx="7" ry="5" fill="#ff8fc0" transform="rotate(-20 79 26)"/>
+          <circle cx="72.5" cy="26" r="3.4" fill="#ef6aa6"/>
+        </svg>
+      </div>
+      <h2>ゴリラの<br>ゆめかわ冒険</h2>
+      <p>パステルの夢の国を走って、バナナとほしを集めよう</p>
+      <span class="go">あそぶ ♡</span>
+    </a>
+
+    <a class="card sunset" href="sunset.html">
+      <div class="art">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="62" cy="46" r="26" fill="#ffd36a"/>
+          <rect x="34" y="36" width="56" height="3" fill="#7a1a45"/>
+          <rect x="34" y="45" width="56" height="4" fill="#7a1a45"/>
+          <rect x="34" y="55" width="56" height="5" fill="#7a1a45"/>
+          <path d="M10 76h80" stroke="#ffb14d" stroke-width="3" stroke-linecap="round"/>
+          <g fill="#140a18">
+            <ellipse cx="34" cy="70" rx="7" ry="5"/><ellipse cx="48" cy="70" rx="7" ry="5"/>
+            <path d="M30 66c-6-4-8-12-6-18 2-7 9-10 16-9 8 1 13 7 12 15-1 7-6 12-13 12z"/>
+            <circle cx="26" cy="48" r="7"/><circle cx="52" cy="48" r="7"/>
+            <ellipse cx="48" cy="34" rx="11" ry="10"/>
+          </g>
+          <ellipse cx="52" cy="32" rx="3" ry="2" fill="#ffd08a"/>
+        </svg>
+      </div>
+      <h2>GORILLA SUNSET</h2>
+      <p>黄昏のシルエット世界を最高速で駆け抜ける</p>
+      <span class="go">PLAY ▶</span>
+    </a>
+  </div>
+
+  <footer>
+    タップ／スペースでジャンプ・2回までOK<br>
+    スコアは遊んだ端末ごとに保存されます
+  </footer>
+</body>
+</html>

@@ -500,6 +500,7 @@
   }
   function gameOver(){
     state = 'over'; overAt = performance.now();
+    shake = 0; flash = 0;
     if (score > best){
       best = score;
       try{ localStorage.setItem('gorilla_yumekawa_best', String(best)); }catch(e){}
@@ -1053,6 +1054,10 @@
     player.t += dt;
     player.blink = (player.blink + dt) % 170;
 
+    // these must settle even after the run ends, or the board keeps shaking
+    if (shake > 0) shake = Math.max(0, shake - .7*dt);
+    if (flash > 0) flash = Math.max(0, flash - .05*dt);
+
     if (state !== 'play') return;
 
     dist += sp * dt;
@@ -1066,8 +1071,6 @@
     } else player.onGround = false;
     if (player.squash !== 0) player.squash *= Math.pow(.86, dt);
     if (invuln > 0) invuln -= dt;
-    if (shake > 0) shake = Math.max(0, shake - .7*dt);
-    if (flash > 0) flash = Math.max(0, flash - .05*dt);
 
     obstGap -= sp * dt;
     if (obstGap <= 0){

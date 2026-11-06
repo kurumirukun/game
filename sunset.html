@@ -464,6 +464,7 @@
   function start(){ reset(); state='play'; titleScreen.classList.add('hide'); overScreen.classList.add('hide'); }
   function gameOver(){
     state='over'; overAt = performance.now();
+    shake = 0; flash = 0;
     if (score > best){ best = score; try{ localStorage.setItem('gorilla_sunset_best', String(best)); }catch(e){} }
     finalScore.textContent = score;
     bestLine.textContent = 'BEST ' + best;
@@ -847,6 +848,10 @@
     scroll += sp * dt;
     P.t += dt * (state === 'play' ? sp/7 : .7);
 
+    // these must settle even after the run ends, or the band keeps shaking
+    if (shake > 0) shake = Math.max(0, shake - .8*dt);
+    if (flash > 0) flash = Math.max(0, flash - .05*dt);
+
     if (state !== 'play') return;
 
     dist += sp * dt;
@@ -854,8 +859,6 @@
     if (burst > 0){ burst -= dt; if (burst <= 0){ burst = 0; boost = 0; } }
     if (comboT > 0){ comboT -= dt; if (comboT <= 0) combo = 0; }
     if (invuln > 0) invuln -= dt;
-    if (shake > 0) shake = Math.max(0, shake - .8*dt);
-    if (flash > 0) flash = Math.max(0, flash - .05*dt);
     if (P.land > 0) P.land -= dt;
 
     // physics

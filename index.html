@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GORILLA GAMES</title>
     <link rel="icon" href="favicon.png" sizes="any">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -21,7 +21,9 @@
     font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
     background:#0d0a18;color:#fff;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:28px 18px 40px;gap:22px;min-height:100dvh;
+    gap:22px;min-height:100svh;
+    padding:calc(28px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right))
+            calc(40px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
   }
   header{text-align:center;margin-bottom:2px}
   h1{

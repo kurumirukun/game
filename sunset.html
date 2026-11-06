@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>GORILLA SUNSET</title>
     <link rel="icon" href="favicon.png" sizes="any">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -19,10 +19,18 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;margin:0;background:#05040a}
   body{
+    height:100vh; height:100svh;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  body{
     display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none;
     font-family:"Noto Sans JP",sans-serif;color:#ffd9a8;
   }
-  #stage{position:relative;width:100vw;height:100dvh;max-height:100dvh}
+  #stage{
+    position:relative;width:100%;
+    height:100vh;
+    height:calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
   canvas{display:block;width:100%;height:100%}
   .overlay{
     position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;

@@ -151,7 +151,8 @@
     BH = Math.min(FH - 14, BW * 1.3);
     if (BH < 240) BH = Math.max(180, FH - 6);
     BX = Math.round((FW - BW) / 2);
-    BY = Math.round((FH - BH) / 2);
+    // sit high on the screen: the space below is where the thumb rests
+    BY = Math.round(Math.min((FH - BH) / 2, Math.max(8, FH * 0.045)));
     W = 420;
     H = Math.round(W * BH / BW);
     K = BW / W;

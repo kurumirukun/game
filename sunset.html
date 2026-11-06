@@ -157,7 +157,9 @@
     W = stage.clientWidth; H = stage.clientHeight;
     BW = W;
     BH = Math.min(H * 0.50, W * 0.92);
-    BX = 0; BY = (H - BH)/2;
+    BX = 0;
+    // sit high on the screen: the space below is where the thumb rests
+    BY = Math.round(Math.min((H - BH)/2, Math.max(34, H * 0.075)));
     K = BW / VW;
     VH = VW * BH / BW;
     HZ = VH - 104;
@@ -808,9 +810,9 @@
     ctx.textAlign = 'right';
     ctx.font = '900 ' + Math.round(Math.min(26, BW*0.055)) + 'px Orbitron, sans-serif';
     ctx.fillStyle = burst>0 ? '#fff0c8' : '#ff9c54';
-    ctx.fillText((speed*12).toFixed(0), BX + BW - 14, ty);
+    ctx.fillText((speed*12).toFixed(0), BX + BW - 62, ty);
     ctx.font = '600 10px Orbitron, sans-serif'; ctx.fillStyle = '#b4826a';
-    ctx.fillText('SPEED  km/h', BX + BW - 14, ty - Math.min(26, BW*0.055) + 2);
+    ctx.fillText('SPEED  km/h', BX + BW - 62, ty - Math.min(26, BW*0.055) + 2);
 
     if (combo > 1 && comboT > 0){
       ctx.textAlign = 'center';

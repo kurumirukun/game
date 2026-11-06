@@ -804,7 +804,7 @@
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 
     // sun
-    const sx = W*.76, sy = H*.12;
+    const sx = W*.76, sy = Math.max(H*.27, 102);   // keep the flare clear of the top edge
     const rg = ctx.createRadialGradient(sx, sy, 4, sx, sy, 96);
     rg.addColorStop(0, 'rgba(255,255,240,.95)');
     rg.addColorStop(.35, 'rgba(255,226,196,.5)');

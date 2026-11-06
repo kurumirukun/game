@@ -38,7 +38,6 @@
     position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;
     padding:50px 16px 24px;text-align:center;overflow-y:auto;-webkit-overflow-scrolling:touch;
     background:radial-gradient(circle at 50% 40%,rgba(255,235,248,.5),rgba(226,210,252,.6));
-    border-radius:20px;
   }
   .overlay.hide{display:none}
   .panel{
@@ -147,9 +146,9 @@
 
   function resize(){
     FW = stage.clientWidth; FH = stage.clientHeight;
-    BW = FW;                                   // full width, like the sunset game
-    BH = Math.min(FH - 14, Math.min(BW * 1.3, FH * 0.65));
-    if (BH < 220) BH = Math.max(160, FH - 6);
+    BW = Math.round(FW);                       // full width, like the sunset game
+    BH = Math.round(Math.min(FH - 14, Math.min(BW * 1.3, FH * 0.65)));
+    if (BH < 220) BH = Math.round(Math.max(160, FH - 6));
     BX = 0;
     // sit high on the screen: the space below is where the thumb rests
     BY = Math.round(Math.min((FH - BH) / 2, Math.max(8, FH * 0.045)));
@@ -1134,13 +1133,12 @@
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.clearRect(0, 0, FW, FH);
 
-    // the board: soft shadow, rounded corners, everything drawn inside it
-    const R = 0;
+    // the board: a plain rectangle, everything drawn inside it
     ctx.fillStyle = '#ffc9e6';
-    rr(BX, BY, BW, BH, R); ctx.fill();
+    ctx.fillRect(BX, BY, BW, BH);
 
     ctx.save();
-    rr(BX, BY, BW, BH, R); ctx.clip();
+    ctx.beginPath(); ctx.rect(BX, BY, BW, BH); ctx.clip();
     ctx.translate(BX, BY); ctx.scale(K, K);
 
     ctx.save();

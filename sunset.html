@@ -89,6 +89,9 @@
         letter-spacing:.18em;margin-top:10px;padding:4px;box-shadow:none;cursor:pointer}
   .mini:active{transform:none;box-shadow:none;color:#ff9c54}
   .newrec{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:.18em;color:#ffd089;margin-top:8px}
+  .homelink{display:none;margin-top:14px;font-family:Orbitron,sans-serif;font-size:10.5px;
+       letter-spacing:.2em;color:#a07a62;text-decoration:none}
+  .homelink:active{color:#ff9c54}
   .ranknote{font-size:10px;color:#7d6052;text-align:center;margin-top:9px;line-height:1.6}
 </style>
 </head>
@@ -124,6 +127,7 @@
       <p class="newrec" id="newRec"></p>
       <button id="againBtn">RETRY</button>
       <div class="rank"><h3>RANKING — TOP 10</h3><div id="rankOver"></div><div class="ranknote" id="noteOver"></div></div>
+      <a class="homelink" id="homeLink" href="index.html">&#8592; ALL GAMES</a>
     </div>
   </div>
 </div>
@@ -439,6 +443,10 @@
     best = 0; renderRank(null);
   });
   renderRank(null);
+  if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)){
+    const hl = document.getElementById('homeLink');
+    if (hl) hl.style.display = 'inline-block';
+  }
 
   /* ---------------- input ---------------- */
   function action(){

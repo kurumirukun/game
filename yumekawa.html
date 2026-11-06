@@ -88,6 +88,9 @@
   .mini{background:none;border:none;color:#c6b4d8;font-size:11px;margin-top:8px;padding:4px;
         box-shadow:none;cursor:pointer;font-family:"Zen Maru Gothic",sans-serif}
   .mini:active{transform:none;box-shadow:none;color:#ff8fc0}
+  .homelink{display:none;margin-top:12px;font-size:12.5px;font-weight:700;color:#b39ccc;
+       text-decoration:none;border-bottom:1.5px dotted #d9c8e8;padding-bottom:1px}
+  .homelink:active{color:#ff8fc0}
   .newrec{font-size:13px;color:#ff7fb4;font-weight:700;margin-top:6px}
   .ranknote{font-size:10.5px;color:#bba9cc;text-align:center;margin-top:8px;line-height:1.6}
 </style>
@@ -120,6 +123,7 @@
       <p class="newrec" id="newRec"></p>
       <button id="againBtn">もういちど</button>
       <div class="rank"><h3>🏆 ランキング TOP10</h3><div id="rankOver"></div><div class="ranknote" id="noteOver"></div></div>
+      <a class="homelink" id="homeLink" href="index.html">🏠 ゲーム一覧にもどる</a>
     </div>
   </div>
 </div>
@@ -463,6 +467,10 @@
     best = 0; renderRank(null);
   });
   renderRank(null);
+  if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)){
+    const hl = document.getElementById('homeLink');
+    if (hl) hl.style.display = 'inline-block';
+  }
 
   /* ---------- input ---------- */
   function action(){

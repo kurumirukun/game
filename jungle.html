@@ -280,6 +280,12 @@
         max-width: 8.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
       .ranking li.is-me .who { color: var(--accent-dark); }
+      .homelink {
+        display: none; margin-top: 12px; font-size: 13px; font-weight: 800;
+        color: var(--dim); text-decoration: none;
+        border-bottom: 2px dotted var(--border); padding-bottom: 1px;
+      }
+      .homelink:active { color: var(--accent-dark); }
       .rank-note {
         margin: 7px 0 0; text-align: center; font-size: 11.5px;
         font-weight: 600; color: var(--dim); line-height: 1.6;
@@ -347,6 +353,7 @@
             <p class="rank-note" id="rank-note-over"></p>
           </div>
           <button type="button" class="play-btn" id="btn-again">↺ もういちど進む</button>
+          <a class="homelink" id="home-link" href="index.html">🏠 ゲーム一覧にもどる</a>
         </div>
 
         <div class="overlay" id="ov-paused" hidden>
@@ -1197,6 +1204,10 @@
       });
 
       renderRankings(null);
+      if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)) {
+        var hl = document.getElementById('home-link');
+        if (hl) hl.style.display = 'inline-block';
+      }
     })();
     </script>
   </body>

@@ -535,7 +535,7 @@
   function spawnObstacle(){
     const kinds = ['bush','mush','crystal'];
     const kind = kinds[(Math.random()*kinds.length)|0];
-    const h = (kind === 'crystal' ? 34 + Math.random()*14 : 30 + Math.random()*12) * SC;
+    const h = (kind === 'crystal' ? 42 + Math.random()*15 : 38 + Math.random()*13) * SC;
     const img = OBS_IMG[kind];
     const ar = (img && img.naturalWidth) ? img.naturalWidth / img.naturalHeight : 1.15;
     const w = h * ar;

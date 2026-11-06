@@ -1138,13 +1138,6 @@
     if (flash > 0){ ctx.fillStyle = 'rgba(255,170,205,' + flash.toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
     ctx.restore();   // shake
     ctx.restore();   // board clip
-
-    // board edge
-    const R2 = Math.min(26, BW * .06);
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 3;
-    rr(BX + 1.5, BY + 1.5, BW - 3, BH - 3, R2 - 1); ctx.stroke();
-    ctx.restore();
   }
 
   resize(); reset();

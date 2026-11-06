@@ -657,14 +657,14 @@
 
   function drawGorilla(px, py, w, h, t, air){
     const bob = air ? 0 : Math.sin(t*.28) * 2;
-    const cx = px + w/2, bottom = py + h + bob;
+    const cx = px + w/2, bottom = py + h + bob + (air ? 0 : SINK);
 
     // shadow
     const lift = Math.min(1, Math.max(0, (GY - (py + h)) / 120));
     ctx.save();
     ctx.globalAlpha = .17 - lift*.11;
     ctx.fillStyle = '#9a6fae';
-    el(cx, GY + 2, (22 - lift*7) * (h/72), 5.2 * (h/72), 0); ctx.fill();
+    el(cx, GY + SINK - 2, (22 - lift*7) * (h/72), 4.6 * (h/72), 0); ctx.fill();
     ctx.restore();
 
     if (apeReady){
@@ -940,15 +940,17 @@
     ctx.beginPath(); ctx.arc(cx, cy + 2.6, 2.6, .25, Math.PI - .25); ctx.stroke();
   }
 
+  const SINK = 8;   // sprites stand on the ground band, below the lace fringe
   function drawObstacle(o){
     const img = OBS_IMG[o.kind];
+    const base = GY + SINK;
     ctx.save();
-    ctx.globalAlpha = .18; ctx.fillStyle = '#a079b8';
-    el(o.x + o.w/2, GY + 2, o.w*.42, 4.5, 0); ctx.fill();
+    ctx.globalAlpha = .16; ctx.fillStyle = '#a079b8';
+    el(o.x + o.w/2, base - 2, o.w*.44, 4, 0); ctx.fill();
     ctx.globalAlpha = 1;
     if (img && img.naturalWidth){
       const dh = o.h, dw = dh * img.naturalWidth / img.naturalHeight;
-      ctx.drawImage(img, o.x + o.w/2 - dw/2, GY - dh, dw, dh);
+      ctx.drawImage(img, o.x + o.w/2 - dw/2, base - dh, dw, dh);
     }
     ctx.restore();
   }

@@ -443,10 +443,17 @@
     best = 0; renderRank(null);
   });
   renderRank(null);
-  if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)){
-    const hl = document.getElementById('homeLink');
-    if (hl) hl.style.display = 'inline-block';
-  }
+  (function(){
+    var hl = document.getElementById('homeLink');
+    if (!hl) return;
+    var here = location.href.split('#')[0].split('?')[0];
+    var top = new URL('index.html', location.href).href;
+    if (top === here) return;
+    if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)){ hl.style.display = 'inline-block'; return; }
+    fetch(top, { method: 'GET', cache: 'no-store' })
+      .then(function (r) { if (r.ok) hl.style.display = 'inline-block'; })
+      .catch(function () {});
+  })();
 
   /* ---------------- input ---------------- */
   function action(){

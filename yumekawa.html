@@ -118,7 +118,7 @@
       <h2>おつかれさま！</h2>
       <p class="sub">スコア</p>
       <p class="big" id="finalScore">0</p>
-      <p class="sub" id="bestLine">ベスト 0</p>
+      <p class="sub" id="bestLine">ベストスコア 0</p>
       <p id="comment">また あそんでね</p>
       <p class="newrec" id="newRec"></p>
       <button id="againBtn">もういちど</button>
@@ -353,7 +353,7 @@
       return {
         rows: flatRows(),
         note: writeBlocked ? 'みんなの きろく（みるだけ）'
-                           : 'みんなの きろく — リンクを おくった ともだちと きょうゆう'
+                           : 'みんなの きろく'
       };
     }
     const list = loadRank();
@@ -457,10 +457,19 @@
     best = 0; renderRank(null);
   });
   renderRank(null);
-  if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)){
+  (function(){
     const hl = document.getElementById('homeLink');
-    if (hl) hl.style.display = 'inline-block';
-  }
+    if (!hl) return;
+    const here = location.href.split('#')[0].split('?')[0];
+    const top = new URL('index.html', location.href).href;
+    if (top === here) return;                       // this page IS the list
+    if (/\/(yumekawa|sunset|jungle)\.html$/.test(location.pathname)){
+      hl.style.display = 'inline-block'; return;    // served beside the list
+    }
+    fetch(top, { method: 'GET', cache: 'no-store' })
+      .then(r => { if (r.ok) hl.style.display = 'inline-block'; })
+      .catch(() => {});
+  })();
 
   /* ---------- input ---------- */
   function action(){
@@ -506,7 +515,7 @@
       : score >= 120 ? 'いい かんじ！💗' : 'また あそんでね';
     const res = addRecord(score);
     best = nameBest();
-    bestLine.textContent = 'ベスト ' + best;
+    bestLine.textContent = 'ベストスコア ' + best;
     let msg = res.pos > 0 ? (res.pos + 'いに ランクイン！') : '';
     if (CLOUD_URL){
       const nm = getName();
@@ -1012,7 +1021,7 @@
     star5(28, 29, 9, '#ffd75e');
     ctx.font = '11px "Zen Maru Gothic", sans-serif';
     ctx.fillStyle = '#ad95c9';
-    ctx.fillText('ベスト ' + best, 13, 58);
+    ctx.fillText('ベストスコア ' + best, 13, 58);
     for (let i=0;i<3;i++){
       const on = i < lives;
       ctx.globalAlpha = on ? 1 : .26;

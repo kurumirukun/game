@@ -815,7 +815,7 @@
     // rainbow
     const bands = ['rgba(255,170,205,.5)','rgba(255,207,170,.46)','rgba(255,243,170,.44)','rgba(178,243,205,.44)','rgba(172,210,255,.44)','rgba(205,186,255,.44)'];
     ctx.save(); ctx.lineWidth = 12;
-    const rx = W*.18, ry = GY*.6, base = W*.58;
+    const rx = W*.18, ry = GY*.92, base = Math.min(W*.58, H*.62);
     for (let i=0;i<bands.length;i++){
       ctx.strokeStyle = bands[i];
       ctx.beginPath(); ctx.arc(rx, ry, base - i*12, Math.PI*1.04, Math.PI*1.96); ctx.stroke();
